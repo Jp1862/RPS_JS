@@ -1,4 +1,5 @@
-const { MOVES, computerPlayer, playGame } = require('./index')
+import { MOVES, computerPlayer, playGame } from './index'
+import { describe, test, expect, afterEach, beforeEach, jest } from '@jest/globals'
 
 const [ROCK, PAPER, SCISSORS] = MOVES
 

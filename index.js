@@ -2,14 +2,14 @@ const ROCK = { toString: () => 'Rock', beats: (other) => other === SCISSORS }
 const PAPER = { toString: () => 'Paper', beats: (other) => other === ROCK }
 const SCISSORS = { toString: () => 'Scissors', beats: (other) => other === PAPER }
 
-const MOVES = [ROCK, PAPER, SCISSORS]
+export const MOVES = [ROCK, PAPER, SCISSORS]
 
-const computerPlayer = {
+export const computerPlayer = {
   chooseMove: () => {
     return MOVES[Math.floor(Math.random() * MOVES.length)]
   }
 }
-function playGame (player1, player2) {
+export function playGame (player1, player2) {
   let winner
   while (!winner) {
     const player1Move = player1.chooseMove()
@@ -28,5 +28,3 @@ function playGame (player1, player2) {
     console.log(`${winner} wins`)
   }
 }
-
-module.exports = { MOVES, computerPlayer, playGame }
