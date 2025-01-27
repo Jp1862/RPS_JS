@@ -1,5 +1,4 @@
-const { afterEach } = require('node:test')
-const { MOVES, computerPlayer } = require('./index')
+const { MOVES, computerPlayer, playGame } = require('./index')
 
 const [ROCK, PAPER, SCISSORS] = MOVES
 
@@ -28,11 +27,7 @@ describe('MOVES', () => {
         )
     }
 })
-// const testCase = [
-//     { randomValue: 0.1, expectedMove: ROCK },
-//     { randomValue: 0.5, expectedMove: PAPER },
-//     { randomValue: 0.8, expectedMove: SCISSORS }
-// ]
+
 describe('computerPlayer', () => {
     const realRandom = Math.random
 
@@ -43,7 +38,7 @@ describe('computerPlayer', () => {
     const testCase = [
         [ROCK, 0.1],
         [PAPER, 0.5],
-        [SCISSORS, 0.8]
+        [SCISSORS, 0.8],
     ]
     for (const [expectedMove, randomValue] of testCase) {
         test(`chooseMove() should return ${expectedMove} when Math.random() returns ${randomValue}`, () => {
@@ -56,4 +51,44 @@ describe('computerPlayer', () => {
 
         })
     }
+})
+
+describe('playGame', () => {
+    const playsRock = { toString: () => "Rocky", chooseMove: () => ROCK }
+    const playsScissors = { toString: () => "Scissory", chooseMove: () => SCISSORS }
+    const playsRockThenScissors = {
+        toString: () => 'RockyScissory',
+        chooseMove: jest.fn().mockReturnValueOnce(ROCK).mockReturnValueOnce(SCISSORS)
+    }
+
+    const realConsoleLog = console.log
+
+    beforeEach(() => {
+        console.log = jest.fn()
+    })
+    afterEach(() => {
+        console.log = realConsoleLog
+    })
+
+    test(`Player 1's move should be reported`, () => {
+        playGame(playsRock, playsScissors)
+        expect(console.log).toHaveBeenCalledWith('Rocky chose Rock')
+    })
+    test(`Player 2's move should be reported`, () => {
+        playGame(playsRock, playsScissors)
+        expect(console.log).toHaveBeenCalledWith('Scissory chose Scissors')
+    })
+    test(`should report when player 1 wins`, () => {
+        playGame(playsRock, playsScissors)
+        expect(console.log).toHaveBeenCalledWith('Rocky wins')
+    })
+    test(`should report when player 2 wins`, () => {
+        playGame(playsScissors, playsRock)
+        expect(console.log).toHaveBeenCalledWith('Rocky wins')
+    })
+    test(`game should replay on draw`, () => {
+        playGame(playsRockThenScissors, playsRock)
+        expect(console.log).toHaveBeenCalledWith('The game is a draw')
+        expect(console.log).toHaveBeenCalledWith('Rocky wins')
+    })
 })
