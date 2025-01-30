@@ -1,4 +1,4 @@
-import { MOVES, ComputerPlayer, playGame, HumanPlayer } from './RPS'
+import { MOVES, ComputerPlayer, playGame, HumanPlayer } from '../RPS'
 import { describe, test, expect, afterEach, beforeEach, jest } from '@jest/globals'
 
 const [ROCK, PAPER, SCISSORS] = MOVES

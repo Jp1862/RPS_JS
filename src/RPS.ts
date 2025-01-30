@@ -1,11 +1,23 @@
-const ROCK = { toString: () => 'Rock', beats: (other) => other === SCISSORS }
-const PAPER = { toString: () => 'Paper', beats: (other) => other === ROCK }
-const SCISSORS = { toString: () => 'Scissors', beats: (other) => other === PAPER }
+interface Move {
+  toString (): string,
+  beats (other: Move): boolean,
+}
+
+const ROCK: Move = { toString: () => 'Rock', beats: (other) => other === SCISSORS }
+const PAPER: Move = { toString: () => 'Paper', beats: (other) => other === ROCK }
+const SCISSORS: Move = { toString: () => 'Scissors', beats: (other) => other === PAPER }
 
 export const MOVES = [ROCK, PAPER, SCISSORS]
 
+interface Player {
+  toString (): string,
+  chooseMove (): Promise<Move>,
+}
+
 export class HumanPlayer {
-  constructor(rl,name) {
+  rl: any
+  name: any
+  constructor(rl: any, name?: string) {
     this.rl = rl
     this.name = name || 'Human'
   }
@@ -21,7 +33,8 @@ export class HumanPlayer {
 }
 
 export class ComputerPlayer {
-  constructor(name) {
+  name: any
+  constructor(name?: string) {
     this.name = name || 'Computer'
   }
   async chooseMove() {
@@ -32,7 +45,7 @@ export class ComputerPlayer {
   }
 }
 
-export async function playGame(player1, player2) {
+export async function playGame(player1: Player, player2: Player) {
   let winner;
   while (!winner) {
     const [player1Move, player2Move] = await Promise.all([player1.chooseMove(), player2.chooseMove()])
